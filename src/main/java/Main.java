@@ -1,7 +1,13 @@
 import Cargo.getProviders;
+import CatogoryTree.NameToId;
+import CatogoryTree.TrendyolCategoryFetcher;
+import getCategoryAttributes.TrendyolCategoryRequest;
 import getSuppliersAddresses.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -14,6 +20,8 @@ public class Main {
         Örnek servis cevabı için https://developers.trendyol.com/docs/marketplace/urun-entegrasyonu/iade-ve-sevkiyat-adres-bilgileri
         trendyol api deki konumu : https://developers.trendyol.com/docs/marketplace/urun-entegrasyonu/iade-ve-sevkiyat-adres-bilgileri
         Ancak shiping adresi ile return adresi karışacağı için böyle yapmayız
+
+        ENTEGRASYONDA AŞAĞIDAKİ İKİ BİLGİ ÖNEMLİ shipmentAddressId returningAddressId
          */
         method method = new method();
         System.out.println(method.QueryAdres());
@@ -50,7 +58,37 @@ public class Main {
         }
         /*
         Aşağıdaki kod ile isme göre id yi çekmeye yarar
+        ENTEGRASYONDA ÖNEMLİ cargoCompanyId"
          */
 
 
-}}
+/*
+Bu kod Parent id si olmayanları döndürür
+ */
+
+        TrendyolCategoryFetcher TrendyolCategoryFetcher = new TrendyolCategoryFetcher();
+        JSONArray categories = TrendyolCategoryFetcher.fetchAllCategories();
+
+        if (categories != null) {
+            System.out.println("Tüm Kategoriler:");
+            for (int i = 0; i < categories.length(); i++) {
+                JSONObject category = categories.getJSONObject(i);
+                System.out.println("ID: " + category.getInt("id") +
+                        ", Name: " + category.getString("name") +
+                        ", Parent ID: " + (category.isNull("parentId") ? "None" : category.getInt("parentId")));
+            }
+        } else {
+            System.out.println("Kategoriler alınamadı.");
+
+
+            
+}
+/*
+Bu method sayesinde
+ */
+        NameToId NameToId = new NameToId();
+        System.out.println(NameToId.getCategoryIdByName("Otomobil & Motosiklet"));
+
+    }
+
+}
